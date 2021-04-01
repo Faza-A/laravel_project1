@@ -41,7 +41,7 @@ class CountryController extends Controller
             'demonym' => Request()-> demonym,
             'flag' => Request()-> flag,
         ];
-        $this->Country->addData($id, $data);
+        $this->Country->addData($data);
         return redirect()->route('country')->with('pesan','Success');
     }
 

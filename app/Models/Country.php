@@ -12,24 +12,22 @@ class Country extends Model
     use HasFactory;
 
     public function allData(){
-        return DB::table('countries')->get();
+        return Country::get();
 
     }
     public function addData($data){
-        DB::table('countries')->insert($data);
+        Country::insert($data);
     }
     public function detailData($id){
-        return DB::table('countries')->where('id', $id)->first();
+        return Country::where('id', $id)->first();
     }
     public function editData($id, $data){
-        DB::table('countries')
-            ->where('id', $id)
+        Country::where('id', $id)
             ->update($data);
     }
 
     public function destroyData($id){
-        DB::table('countries')
-            ->where('id', $id)
+        Country::where('id', $id)
             ->delete();
     }
 }
