@@ -16,18 +16,18 @@ class users extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        for($i=0;$i<10;$i++){
+        for($i=0;$i<250;$i++){
             DB::table('users')->insert([
-                'id' => $faker->numerify('#########'),
+                'id' => $i+1,
                 'first_name' => $faker->firstName,
                 'last_name' => $faker->lastName,
                 'email' => $faker->email,
                 'phone_number' => $faker->phoneNumber,
-                'gender'=> $faker->randomElements(['M','F'])[0],
+                'gender'=> $faker->randomElement(['M','F']),
                 'country_id' => $faker->areaCode,
                 'password'=> $faker->password,
-                'created_at'=> $faker -> numerify('#########'),
-                'updated_at' => $faker -> numerify('########'),
+                'created_at'=> $faker -> dateTime,
+                'updated_at' => $faker -> dateTime,
 
             ]);
         }

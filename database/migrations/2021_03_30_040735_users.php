@@ -22,8 +22,8 @@ class Users extends Migration
             $table->enum('gender', ['M','F']);
             $table->integer('country_id')->length(10)->unsigned();
             $table->string('password', 255);
-            $table->integer('created_at')->length(10)->unsigned();
-            $table->integer('updated_at')->length(10)->unsigned();
+            $table->timestamps('created_at');
+            $table->timestamps('updated_at');
         });
     }
 

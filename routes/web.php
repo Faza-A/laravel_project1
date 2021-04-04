@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,10 @@ Route::post('/country/insert', [CountryController::class, 'insert']);
 Route::get('/country/edit/{id}', [CountryController::class, 'edit']);
 Route::post('/country/update/{id}', [CountryController::class, 'update']);
 Route::get('/country/delete/{id}', [CountryController::class, 'destroy']);
+
+Route::get('/users', [UserController::class, 'index'])->name('users');;
+Route::get('/users/add', [UserController::class, 'add']);
+Route::post('/users/insert', [UserController::class, 'insert']);
+Route::get('/users/edit/{id}', [UserController::class, 'edit']);
+Route::post('/users/update/{id}', [UserController::class, 'update']);
+Route::get('/users/delete/{id}', [UserController::class, 'destroy']);

@@ -10,7 +10,7 @@
     </div>
 @endif
     <br><a href="/country/add" class="btn btn-primary btn-sm">Add</a><br><br>
-    <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%" id="datatable">
         <thead>
             <tr>
                 <th class="th-sm">No</th>
@@ -43,4 +43,11 @@
         </tbody>
     </table>
 
+@endsection
+@section('footer')
+    <script>
+        $(document).ready(function(){
+            $('#datatable').DataTable();
+        });
+    </script>
 @endsection
