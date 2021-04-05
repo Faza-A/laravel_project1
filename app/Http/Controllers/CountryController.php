@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
+use Yajra\DataTables\DataTables;
 
 class CountryController extends Controller
 {
@@ -12,6 +13,18 @@ class CountryController extends Controller
         $this->Country = new Country();
 
     }
+    
+    public function json(){
+        return DataTables::of(Country::all())
+            ->addColumn('action', function($data){
+                $edit = '<a href="/country/edit/'.$data->id.'" class="btn btn-sm btn-warning">Edit</a>';
+                $edit .='&nbsp;&nbsp; <a onClick="return confirm("Are you sure?")" href="/country/delete/'.$data->id.'" class="btn btn-sm btn-danger">Delete</a>';
+                return $edit;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+    
     public function index()
     {
         $data = [

@@ -12,16 +12,20 @@ class User extends Model
     public function allData(){
         return User::get();
     }
+
     public function addData($data){
         User::insert($data);
     }
+
     public function detailData($id){
         return User::where('id', $id)->first();
     }
+
     public function editData($id, $data){
         User::where('id', $id)
             ->update($data);
     }
+    
     public function destroyData($id){
         User::where('id', $id)
             ->delete();

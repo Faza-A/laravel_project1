@@ -23,31 +23,34 @@
                 <th>Action</th>
             </tr>
         </thead>
-        <tbody>
-            <?php $no=1; ?>
-            @foreach ($countries as $item)
-                <tr>
-                    <td>{{$no++}}</td>
-                    <td>{{$item->name}}</td>
-                    <td>{{$item->alpha2_code}}</td>
-                    <td>{{$item->alpha3_code}}</td>
-                    <td>{{$item->calling_code}}</td>
-                    <td>{{$item->demonym}}</td>
-                    <td><img src="{{$item->flag}}" alt="" width="80px"></td>
-                    <td>
-                        <a href="/country/edit/{{$item->id}}" class="btn btn-sm btn-warning">Edit</a>
-                        <a onClick="return confirm('Are you sure you want to delete {{$item->name}}?')" href='country/delete/{{$item->id}}' type='button' class='btn btn-sm btn-danger'>Delete</a>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
     </table>
 
 @endsection
 @section('footer')
     <script>
         $(document).ready(function(){
-            $('#datatable').DataTable();
+            $('#datatable').DataTable( {
+                processing:true,
+                serverSide:true,
+                ajax: '/country/json',
+                columns:[
+                    {data: 'id', name:'id'},
+                    {data: 'name', name:'name'},
+                    {data: 'alpha2_code', name: 'alpha2_code'},
+                    {data: 'alpha3_code', name: 'alpha3_code'},
+                    {data: 'calling_code', name: 'calling_code'},
+                    {data: 'demonym', name: 'demonym'},
+                    {data: 'flag', name: 'flag'},
+                    {data: 'action', name: 'action', orderable: false}
+                ],
+                columnDefs:[{
+                        'targets': 6,
+                        'data': 'flag',
+                        'render': function(data, type, row, meta){
+                            return '<img src="' + data + '" alt="' + data + '"width="80px"/>';
+                    }
+                }]
+            } );
         });
     </script>
 @endsection

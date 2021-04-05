@@ -5,11 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
 {
     public function __construct(){
         $this->User = new User;
+    }
+
+    public function json(){
+        return DataTables::of(User::all())
+        ->addColumn('action', function($data){
+            $edit = '<a href="/users/edit/'.$data->id.'" class="btn btn-sm btn-warning">Edit</a>';
+            $edit .='&nbsp;&nbsp; <a onClick="return confirm("Are you sure?")" href="/users/delete/'.$data->id.'" class="btn btn-sm btn-danger">Delete</a>';
+            return $edit;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
     }
     
     public function index(){
@@ -19,6 +31,7 @@ class UserController extends Controller
 
         return view('user', $data);
     }
+    
     public function add(){
         return view('useradd');
     }

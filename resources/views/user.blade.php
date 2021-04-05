@@ -1,8 +1,7 @@
 @extends('layout.template')
-@section('title','Home')
+@section('title','User')
 
 @section('content')
-
 @if (session('pesan'))
     <div class="alert alert-success alert-dismissible">
         <button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -10,7 +9,6 @@
         {{session('pesan')}}.
     </div>
 @endif
-
 <br><a href="/users/add" class="btn btn-primary btn-sm">Add</a><br><br>    
 <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%" id="datatable">
     <thead>
@@ -28,31 +26,6 @@
             <th>Action</th>
         </tr>
     </thead>
-    <tbody>
-        <?php $no=1; ?>
-        @foreach ($users as $item)
-            <tr>
-                <td>{{$no++}}</td>
-                <td>{{$item->first_name}}</td>
-                <td>{{$item->last_name}}</td>
-                <td>{{$item->email}}</td>
-                <td>{{$item->phone_number}}</td>
-                <td>@if ($item->gender === 'M')
-                    Male
-                @else
-                    Female
-                @endif</td>
-                <td>{{$item->country_id}}</td>
-                <td>*****</td>
-                <td>{{$item->created_at}}</td>
-                <td>{{$item->updated_at}}</td>
-                <td>
-                    <a href="/users/edit/{{$item->id}}" class="btn btn-sm btn-warning">Edit</a>
-                    <a onClick="return confirm('Are you sure you want to delete {{$item->name}}?')" href='users/delete/{{$item->id}}' type='button' class='btn btn-sm btn-danger'>Delete</a>
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
 </table>
 
 @endsection
@@ -60,7 +33,44 @@
 @section('footer')
 <script>
     $(document).ready(function(){
-        $('#datatable').DataTable();
+        $('#datatable').DataTable( {
+            processing:true,
+            serverSide:true,
+            ajax: '/users/json',
+            columns:[
+                {data: 'id', name: 'id'},
+                {data: 'first_name', name: 'first_name'},
+                {data: 'last_name', name: 'last_name'},
+                {data: 'email', name: 'email'},
+                {data: 'phone_number', name: 'phone_number'},
+                {data: 'gender', name: 'gender'},
+                {data: 'country_id', name: 'country_id'},
+                {data: 'password', name: 'password'},
+                {data: 'created_at', name: 'created_at'},
+                {data: 'updated_at', name: 'updated_at'},
+                {data: 'action', name: 'action'}
+            ],
+            columnDefs:[{
+                'targets': 5,
+                'data': 'gender',
+                'render': function(data, type, row){
+                    if(data === 'M'){
+                        return "Male";
+                    }else{
+                        return "Female";
+                    }
+                }
+            },
+            {
+                'targets': 7,
+                'data': 'password',
+                'render': function(data, type, row){
+                    if(data !== ''){
+                        return "********";
+                    }
+                }
+            }]
+        });
     });
 </script>
 @endsection
