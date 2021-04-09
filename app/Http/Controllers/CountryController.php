@@ -90,9 +90,18 @@ class CountryController extends Controller
         $this->Country->editData($id, $data);
         return redirect()->route('country')->with('pesan','Update Success');
     }
-    public function destroy($id){
+    public function destroy($id){ 
         
         $this->Country->destroyData($id);
         return redirect()->route('country')->with('pesan','Delete data Success');
+    }
+
+    public function api()
+    {
+        $data = [
+            'countries' => $this->Country->allData(),
+        ];
+
+        return $data;
     }
 }
