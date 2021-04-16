@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use Validator;
 use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
@@ -25,52 +23,30 @@ class UserController extends Controller
         ->rawColumns(['action'])
         ->make(true);
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
+    
+    public function index(){
         $data = [
             'users' => $this->User->allData(),
         ];
-        
+
         return view('user', $data);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    
+    public function add(){
+        return view('useradd');
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $validation = Validator::make($request->all(),[
+    public function insert(){
+        Request()->validate([
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|unique:users|email',
+            'email' => 'required|email',
             'phone_number' => 'required',
-            'gender' => 'required|',
+            'gender' => 'required',
             'country_id' => 'required',
             'password'=>'required',
-            'c_password'=>'required|same:password',
+        ],[
+            'first_name required' => 'Firstname harus diisi!'
         ]);
-        
-        if($validation->fails()){
-            return response()->json($validation->errors(), 202);
-        }
 
         $data=[
             'first_name' => Request()-> first_name,
@@ -81,98 +57,56 @@ class UserController extends Controller
             'country_id' => Request()-> country_id,
             'password' => Request()-> password,
             'created_at' => now(),
-            'updated_at'=> now(),
+            'updated_at' => now(),
         ];
-
-        $data['password'] = bcrypt($data['password']);
-        
-        // return $data;
-
-        $result = $this->User->addData($data);
-
-        $resArr = [];
-        $resArr['token']=$result->createToken('api-application')->accessToken;
-        $resArr['email']=$result->email;
-
-        return response()->json($resArr, 200);
+        $this->User->addData($data);
+        return redirect()->route('users')->with('pesan','Success');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $data =[
+    public function edit($id){
+
+        if(!$this->User->detailData($id)){
+            abort(404);
+        }
+
+        $data = [
             'users' => $this->User->detailData($id),
         ];
-        
         return view('useredit', $data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $data = $this->User->detailData($id);
+    public function update($id){
+        Request()->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+            'phone_number' => 'required',
+            'gender' => 'required',
+            'country_id' => 'required',
+            'password'=>'required',
+            'created_at'=>'required',
+        ]);
 
         $data=[
-            'first_name' => $request-> first_name,
-            'last_name' => $request-> last_name,
-            'email' => $request-> email,
-            'phone_number' => $request-> phone_number,
-            'gender' => $request-> gender,
-            'country_id' => $request-> country_id,
-            'password' => $request-> password,
-            'updated_at'=> now(),
-
+            'first_name' => Request()-> first_name,
+            'last_name' => Request()-> last_name,
+            'email' => Request()-> email,
+            'phone_number' => Request()-> phone_number,
+            'gender' => Request()-> gender,
+            'country_id' => Request()-> country_id,
+            'password' => Request()-> password,
+            'created_at' => Request()->created_at,
+            'updated_at' => now(),
         ];
-        $result = $this->User->editData($id, $data);
-
-        return $result;
+        $this->User->editData($id, $data);
+        return redirect()->route('users')->with('pesan','Update Success');
+    
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
+    public function destroy($id){
+        
         $this->User->destroyData($id);
+        return redirect()->route('users')->with('pesan','Delete data Success');
     }
 
-    public function login(Request $request){
-        if(Auth::attempt([
-            'email'=>$request->email,
-            'password'=>$request->password
-        ])){
-            $user = Auth::User();
-            $resArr=[];
-            $resArr['token']=$user->createToken('api-application')->accessToken;
-            $resArr['email']=$user->email;
-            return response()->json($resArr, 200);
-        }else{
-            return response()->json(['error'=>'Unauthorized Access'], 203);
-        }
-    }
 }

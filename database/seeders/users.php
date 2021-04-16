@@ -24,8 +24,8 @@ class users extends Seeder
                 'email' => $faker->email,
                 'phone_number' => $faker->phoneNumber,
                 'gender'=> $faker->randomElement(['M','F']),
-                'country_id' => $faker->areaCode,
-                'password'=> $faker->password,
+                'country_id' => rand(1,250),
+                'password'=> bcrypt($faker->password),
                 'created_at'=> $faker -> dateTime,
                 'updated_at' => $faker -> dateTime,
 

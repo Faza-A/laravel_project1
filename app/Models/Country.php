@@ -4,11 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Country extends Model
 {
     public $timestamps = false;
     use HasFactory;
+    protected $fillable=[
+        'name','alpha2_code', 'alpha3_code', 'calling_code', 'demonym','flag'
+    ];
 
     public function allData(){
         return Country::get();
@@ -28,5 +32,8 @@ class Country extends Model
     public function destroyData($id){
         Country::where('id', $id)
             ->delete();
+    }
+    public function user(){
+        return $this->hasMany(User::class);
     }
 }

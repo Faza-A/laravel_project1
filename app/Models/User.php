@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
-
+use App\Models\Country;
+use app\Http\Resources\CountryResource;
 
 class User extends Authenticatable
 {
@@ -24,7 +25,7 @@ class User extends Authenticatable
     ];
 
     public function allData(){
-        return User::get();
+        return User::all();
     }
 
     public function addData($data){
@@ -43,5 +44,12 @@ class User extends Authenticatable
     public function destroyData($id){
         User::where('id', $id)
             ->delete();
+    }
+
+    public function country(){
+        return $this->belongsTo(Country::class);
+    }
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 }

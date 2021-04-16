@@ -45,6 +45,8 @@ class CountryController extends Controller
             'calling_code' => 'required',
             'demonym' => 'required',
             'flag' => 'required',
+        ],[
+            'first_name required' => 'Firstname harus diisi!'
         ]);
         $data=[
             'name' => Request()->name,
@@ -96,12 +98,5 @@ class CountryController extends Controller
         return redirect()->route('country')->with('pesan','Delete data Success');
     }
 
-    public function api()
-    {
-        $data = [
-            'countries' => $this->Country->allData(),
-        ];
-
-        return $data;
-    }
+    
 }
