@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Country;
 use Yajra\DataTables\DataTables;
 use App\Http\Resources\CountryResource;
+use App\Http\Requests\CountryRequest;
 
 class CountryAPIController extends Controller
 {
@@ -36,9 +37,23 @@ class CountryAPIController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CountryRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        $data=[
+            'name' => Request()->name,
+            'alpha2_code' => Request()-> alpha2_code,
+            'alpha3_code' => Request()-> alpha3_code,
+            'calling_code' => Request()-> calling_code,
+            'demonym' => Request()-> demonym,
+            'flag' => Request()-> flag,
+        ];
+
+        $result = $this->Country->addData($data);
+
+        return response()->json($result, 200);
+
     }
 
     /**
@@ -60,9 +75,21 @@ class CountryAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CountryRequest $request, $id)
     {
-        //
+        $data = $this->Country->detailData($id);
+        $data=[
+            'name' => Request()->name,
+            'alpha2_code' => Request()-> alpha2_code,
+            'alpha3_code' => Request()-> alpha3_code,
+            'calling_code' => Request()-> calling_code,
+            'demonym' => Request()-> demonym,
+            'flag' => Request()-> flag,
+        ];
+        $validated = $request->validated();
+
+        $result = $this->Country->editData($id, $data);
+        return $result;
     }
 
     /**

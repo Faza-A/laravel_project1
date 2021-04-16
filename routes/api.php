@@ -30,3 +30,7 @@ Route::apiResource("users", UserAPIController::class);
 
 Route::post('/login', [UserAPIController::class, 'login']);
 Route::get('/login', [UserAPIController::class, 'login']);
+
+Route::get('/cors-test', function() {
+    dd("This won't work");
+ });

@@ -7,7 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 use App\Http\Resources\UserResource;
-use App\Models\User;    
+use App\Models\User;
+use App\Http\Requests\StorePostRequest;
 
 use Validator;
 
@@ -54,34 +55,10 @@ class UserAPIController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $validation = Validator::make($request->all(),[
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|unique:users|email',
-            'phone_number' => 'required',
-            'gender' => 'required',
-            'country_id' => 'required',
-            'password'=>'required',
-            'c_password'=>'required|same:password',
-        ],[
-            'first_name.required' => 'Firstname harus diisi',
-            'last_name.required' => 'Lastname harus diisi',
-            'email.required' => 'Email harus diisi!',
-            'email.unique'=>'Email sudah terdaftar',
-            'email.email'=>'Email tidak valid',
-            'phone_number.required' => 'No Tlpn harus diisi',
-            'gender.required'=>'gender harus diisi',
-            'country_id.required'=>'Negara harus diisi',
-            'password.required'=>'Password tidak boleh kosong',
-            'c_password.required'=>'Password harus diisi',
-            'c_password.same'=>'Password tidak sama'
-        ]);
-        
-        if($validation->fails()){
-            return response()->json($validation->errors(), 202);
-        }
+
+        $validated = $request->validated();
 
         $data=[
             'first_name' => Request()-> first_name,
@@ -146,7 +123,7 @@ class UserAPIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StorePostRequest $request, $id)
     {
         $data = $this->User->detailData($id);
 
@@ -161,6 +138,11 @@ class UserAPIController extends Controller
             'updated_at'=> now(),
 
         ];
+
+        $validated = $request->validated();
+        
+        $data['password'] = bcrypt($data['password']);
+
         $result = $this->User->editData($id, $data);
 
         return $result;
