@@ -24,11 +24,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('json', function(){
-    $user = User::find(1);
-    return new UserResource($user);
-});
-
 Route::apiResource('countries', CountryAPIController::class);
 
 Route::apiResource("users", UserAPIController::class);
