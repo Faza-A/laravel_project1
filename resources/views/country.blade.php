@@ -1,30 +1,66 @@
-@extends('layout.template')
+@extends('layouts.template')
 @section('title','Country')
 
 @section('content')
-@if (session('pesan'))
-    <div class="alert alert-success alert-dismissible">
-        <button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <h4><i class="icon fa fa-check"></i>Success!</h4>
-        {{session('pesan')}}.
+
+@if (\Session::has('update'))
+    <div class="alert alert-success" id="hide-message" role="alert">
+        Data updated!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 @endif
-    <br><a href="/country/add" class="btn btn-primary btn-sm">Add</a><br><br>
-    <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%" id="datatable">
-        <thead>
-            <tr>
-                <th class="th-sm">No</th>
-                <th class="th-sm">Name</th>
-                <th class="th-sm">Alpha2 Code</th>
-                <th class="th-sm">Alpha3 Code</th>
-                <th class="th-sm">Call Code</th>
-                <th class="th-sm">Demonym</th>
-                <th class="th-sm">Flag</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-    </table>
+@if (\Session::has('tambah'))
+    <div class="alert alert-success" id="hide-message" role="alert">
+        Data saved!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+@if(\Session::has('delete'))
+    <div class="alert alert-danger" id="hide-message" role="alert">
+        Data deleted!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
 
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Data Countries</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="datatable" width="99.9%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Alpha2 Code</th>
+                        <th>Alpha3 Code</th>
+                        <th>Call Code</th>
+                        <th>Demonym</th>
+                        <th>Flag</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+{{-- form insert or edit --}}
+@if (Request::is('country/*'))
+    @include('form.editCountry')
+@else
+    @include('form.insertCountry')
+@endif
+
+{{-- end form --}}
 @endsection
 @section('footer')
     <script>
@@ -52,5 +88,11 @@
                 }]
             } );
         });
+    </script>
+    <script>
+        $('#hide-message').show();
+        setTimeout(function(){
+            $('#hide-message').hide();
+        }, 4000);
     </script>
 @endsection

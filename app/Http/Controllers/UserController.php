@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Yajra\DataTables\DataTables;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
     public function __construct(){
         $this->User = new User;
+        $this->middleware('auth');
     }
 
     public function json(){
@@ -39,13 +41,15 @@ class UserController extends Controller
         Request()->validate([
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'phone_number' => 'required',
             'gender' => 'required',
             'country_id' => 'required',
             'password'=>'required',
+            'c_password'=>'required|same:password',
         ],[
-            'first_name required' => 'Firstname harus diisi!'
+            'c_password.required'=>'The Re-Password field is required.'   ,
+            'c_password.same'=>'Password does not match'
         ]);
 
         $data=[
@@ -59,8 +63,11 @@ class UserController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ];
+
+        $data['password'] = bcrypt($data['password']);
+
         $this->User->addData($data);
-        return redirect()->route('users')->with('pesan','Success');
+        return redirect()->route('users')->with('tambah','Success');
     }
 
     public function edit($id){
@@ -72,7 +79,7 @@ class UserController extends Controller
         $data = [
             'users' => $this->User->detailData($id),
         ];
-        return view('useredit', $data);
+        return view('user', $data);
     }
 
     public function update($id){
@@ -83,8 +90,8 @@ class UserController extends Controller
             'phone_number' => 'required',
             'gender' => 'required',
             'country_id' => 'required',
-            'password'=>'required',
-            'created_at'=>'required',
+            // 'password'=>'required',
+            // 'created_at'=>'required',
         ]);
 
         $data=[
@@ -94,19 +101,19 @@ class UserController extends Controller
             'phone_number' => Request()-> phone_number,
             'gender' => Request()-> gender,
             'country_id' => Request()-> country_id,
-            'password' => Request()-> password,
-            'created_at' => Request()->created_at,
+            // 'password' => Request()-> password,
+            // 'created_at' => Request()->created_at,
             'updated_at' => now(),
         ];
         $this->User->editData($id, $data);
-        return redirect()->route('users')->with('pesan','Update Success');
+        return redirect()->route('users')->with('update','Update Success');
     
     }
 
     public function destroy($id){
         
         $this->User->destroyData($id);
-        return redirect()->route('users')->with('pesan','Delete data Success');
+        return redirect()->route('users')->with('delete','Delete data Success');
     }
 
 }

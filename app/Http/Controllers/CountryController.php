@@ -11,6 +11,7 @@ class CountryController extends Controller
 {
     public function __construct(){
         $this->Country = new Country();
+        $this->middleware('auth');
 
     }
     
@@ -18,7 +19,7 @@ class CountryController extends Controller
         return DataTables::of(Country::all())
             ->addColumn('action', function($data){
                 $edit = '<a href="/country/edit/'.$data->id.'" class="btn btn-sm btn-warning">Edit</a>';
-                $edit .='&nbsp;&nbsp; <a onClick="return confirm("Are you sure?")" href="/country/delete/'.$data->id.'" class="btn btn-sm btn-danger">Delete</a>';
+                $edit .='&nbsp;&nbsp; <a onclick="return confirm("Are you sure?")" href="/country/delete/'.$data->id.'" class="btn btn-sm btn-danger">Delete</a>';
                 return $edit;
             })
             ->rawColumns(['action'])
@@ -38,6 +39,7 @@ class CountryController extends Controller
         return view('countryadd');
     }
     public function insert(){
+
         Request()->validate([
             'name' => 'required',
             'alpha2_code' => 'required',
@@ -48,6 +50,7 @@ class CountryController extends Controller
         ],[
             'first_name required' => 'Firstname harus diisi!'
         ]);
+
         $data=[
             'name' => Request()->name,
             'alpha2_code' => Request()-> alpha2_code,
@@ -57,7 +60,7 @@ class CountryController extends Controller
             'flag' => Request()-> flag,
         ];
         $this->Country->addData($data);
-        return redirect()->route('country')->with('pesan','Success');
+        return redirect()->route('country')->with('tambah','Success');
     }
 
     public function edit($id){
@@ -69,7 +72,7 @@ class CountryController extends Controller
         $data = [
             'countries' => $this->Country->detailData($id),
         ];
-        return view('countryedit', $data);
+        return view('country', $data);
     }
 
     public function update($id){
@@ -90,12 +93,12 @@ class CountryController extends Controller
             'flag' => Request()-> flag,
         ];
         $this->Country->editData($id, $data);
-        return redirect()->route('country')->with('pesan','Update Success');
+        return redirect()->route('country')->with('update','Update Success');
     }
     public function destroy($id){ 
         
         $this->Country->destroyData($id);
-        return redirect()->route('country')->with('pesan','Delete data Success');
+        return redirect()->route('country')->with('delete','Delete data Success');
     }
 
     

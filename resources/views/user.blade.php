@@ -1,35 +1,70 @@
-@extends('layout.template')
-@section('title','User')
+@extends('layouts.template')
+@section('title','dashboard')
 
 @section('content')
-@if (session('pesan'))
-    <div class="alert alert-success alert-dismissible">
-        <button class="close" type="button" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <h4><i class="icon fa fa-check"></i>Success!</h4>
-        {{session('pesan')}}.
+@if (\Session::has('update'))
+    <div class="alert alert-success" id="hide-message" role="alert">
+        Data updated!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 @endif
-<br><a href="/users/add" class="btn btn-primary btn-sm">Add</a><br><br>    
-<table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%" id="datatable">
-    <thead>
-        <tr>
-            <th class="th-sm">No</th>
-            <th class="th-sm">First Name</th>
-            <th class="th-sm">Last Name</th>
-            <th class="th-sm">Email</th>
-            <th class="th-sm">Phone Number</th>
-            <th class="th-sm">Gender</th>
-            <th class="th-sm">Country</th>
-            <th class="th-sm">Password</th>
-            <th class="th-sm">Created</th>
-            <th class="th-sm">Updated</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-</table>
+@if (\Session::has('tambah'))
+    <div class="alert alert-success" id="hide-message" role="alert">
+        Data saved!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+@if(\Session::has('delete'))
+    <div class="alert alert-danger" id="hide-message" role="alert">
+        Data deleted!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Users Data</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="datatable" width="99.9%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Gender</th>
+                        <th>Country</th>
+                        {{-- <th>Password</th>
+                        <th>Created</th>
+                        <th>Updated</th> --}}
+                        <th>Action</th>
+                    </tr>
+                </thead>        
+            </table>
+        </div>
+    </div>
+</div>
+
+{{-- form insert or edit --}}
+@if (Request::is('users/*'))
+    @include('form.editUser')
+@else
+    @include('form.insertUser')
+@endif
+
+{{-- end form --}}
 
 @endsection
-
 @section('footer')
 <script>
     $(document).ready(function(){
@@ -45,9 +80,9 @@
                 {data: 'phone_number', name: 'phone_number'},
                 {data: 'gender', name: 'gender'},
                 {data: 'country_id', name: 'country_id'},
-                {data: 'password', name: 'password'},
-                {data: 'created_at', name: 'created_at'},
-                {data: 'updated_at', name: 'updated_at'},
+                // {data: 'password', name: 'password'},
+                // {data: 'created_at', name: 'created_at'},
+                // {data: 'updated_at', name: 'updated_at'},
                 {data: 'action', name: 'action'}
             ],
             columnDefs:[{
@@ -61,16 +96,23 @@
                     }
                 }
             },
-            {
-                'targets': 7,
-                'data': 'password',
-                'render': function(data, type, row){
-                    if(data !== ''){
-                        return "********";
-                    }
-                }
-            }]
+            // {
+            //     'targets': 7,
+            //     'data': 'password',
+            //     'render': function(data, type, row){
+            //         if(data !== ''){
+            //             return "********";
+            //         }
+            //     }
+            // }
+            ]
         });
     });
+</script>
+<script>
+    $('#hide-message').show();
+    setTimeout(function(){
+        $('#hide-message').hide();
+    }, 4000);
 </script>
 @endsection
