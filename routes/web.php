@@ -16,7 +16,7 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('auth.login');
 });
 
 Route::get('/country', [CountryController::class, 'index'])->name('country');
@@ -35,3 +35,6 @@ Route::get('/users/edit/{id}', [UserController::class, 'edit']);
 Route::post('/users/update/{id}', [UserController::class, 'update']);
 Route::get('/users/delete/{id}', [UserController::class, 'destroy']);
 Route::get('/users/json', [UserController::class, 'json']);
+
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
