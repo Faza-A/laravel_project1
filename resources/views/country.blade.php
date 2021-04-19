@@ -32,7 +32,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Data Countries</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Data Countries <a href="/country/add" class="btn btn-primary float-right">Insert Data</a></h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -53,14 +53,6 @@
         </div>
     </div>
 </div>
-{{-- form insert or edit --}}
-@if (Request::is('country/*'))
-    @include('form.editCountry')
-@else
-    @include('form.insertCountry')
-@endif
-
-{{-- end form --}}
 @endsection
 @section('footer')
     <script>

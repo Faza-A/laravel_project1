@@ -4,6 +4,6 @@
 
 @section('content')
 
-@include('form.insertUser')
+@include('form.insertCountry')
 
 @endsection

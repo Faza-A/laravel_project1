@@ -30,7 +30,9 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Users Data</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Users Data <a href="/users/add" class="btn btn-primary float-right">Insert Data</a></h6>
+
+        
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -52,17 +54,9 @@
                 </thead>        
             </table>
         </div>
+
     </div>
 </div>
-
-{{-- form insert or edit --}}
-@if (Request::is('users/*'))
-    @include('form.editUser')
-@else
-    @include('form.insertUser')
-@endif
-
-{{-- end form --}}
 
 @endsection
 @section('footer')

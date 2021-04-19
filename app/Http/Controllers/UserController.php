@@ -79,7 +79,7 @@ class UserController extends Controller
         $data = [
             'users' => $this->User->detailData($id),
         ];
-        return view('user', $data);
+        return view('useredit', $data);
     }
 
     public function update($id){

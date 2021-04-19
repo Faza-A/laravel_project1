@@ -1,8 +1,9 @@
 @extends('layouts.template')
-@section('title','Edit User')
+@section('title','Create User')
+
 
 @section('content')
 
-@include('form.editUser')
+@include('form.editCountry')
 
 @endsection

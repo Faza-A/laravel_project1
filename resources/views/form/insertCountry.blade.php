@@ -63,6 +63,7 @@
             </div>
             
             <button type="submit" class="btn btn-primary">Save</button>
+            <a href="/country" class="btn btn-danger">Cancel</a>
           </form>
     </div>
 </div>

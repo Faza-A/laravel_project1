@@ -95,6 +95,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary">Save</button>
+            <a href="/users" class="btn btn-danger">Cancel</a>
         </form>
     </div>
 </div>
