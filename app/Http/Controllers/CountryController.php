@@ -72,7 +72,7 @@ class CountryController extends Controller
         $data = [
             'countries' => $this->Country->detailData($id),
         ];
-        return view('countryedit', $data);
+        return view('country', $data);
     }
 
     public function update($id){
