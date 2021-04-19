@@ -14,11 +14,7 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-<<<<<<< HEAD
     <li class="nav-item {{request()->is('/') ? 'active':''}}{{request()->is('home') ? 'active':''}}" >
-=======
-    <li class="nav-item {{request()->is('/') ? 'active':''}}" >
->>>>>>> c71f797aa1916301a46df910460741df8e13b547
         <a class="nav-link" href="/">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>

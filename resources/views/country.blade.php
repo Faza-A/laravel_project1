@@ -25,45 +25,8 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
-<<<<<<< HEAD
-=======
     </div>
 @endif
-
-
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Data Countries</h6>
->>>>>>> c71f797aa1916301a46df910460741df8e13b547
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered" id="datatable" width="99.9%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Name</th>
-                        <th>Alpha2 Code</th>
-                        <th>Alpha3 Code</th>
-                        <th>Call Code</th>
-                        <th>Demonym</th>
-                        <th>Flag</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-    </div>
-</div>
-{{-- form insert or edit --}}
-@if (Request::is('country/*'))
-    @include('form.editCountry')
-@else
-    @include('form.insertCountry')
-@endif
-
-<<<<<<< HEAD
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 <div class="card shadow mb-4">
@@ -89,10 +52,8 @@
         </div>
     </div>
 </div>
-=======
-{{-- end form --}}
->>>>>>> c71f797aa1916301a46df910460741df8e13b547
 @endsection
+
 @section('footer')
     <script>
         $(document).ready(function(){
